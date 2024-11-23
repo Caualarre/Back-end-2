@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('notas', function (Blueprint $table) {
             $table->id();
-            $table->string('valor');
-            $table->timestamps();
+            $table->string('valor'); // Valor da nota
+            $table->timestamps(); // Para armazenar os timestamps de criação e atualização
         });
     }
 

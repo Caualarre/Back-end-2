@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 11/11/2024 às 21:14
+-- Tempo de geração: 23/11/2024 às 06:26
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -132,7 +132,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (5, '2024_11_11_184733_create_fornecedors_table', 1),
 (6, '2024_11_11_185839_create_vtubers_table', 1),
 (7, '2024_11_11_190305_create_notas_table', 1),
-(8, '2024_11_11_190519_create_personal_access_tokens_table', 1);
+(8, '2024_11_11_190519_create_personal_access_tokens_table', 1),
+(9, '2024_11_23_042904_create_usuarios_table', 1);
 
 -- --------------------------------------------------------
 
@@ -152,12 +153,13 @@ CREATE TABLE `notas` (
 --
 
 INSERT INTO `notas` (`id`, `valor`, `created_at`, `updated_at`) VALUES
-(1, '10', '2024-11-11 20:03:48', '2024-11-11 20:03:48'),
-(2, '9', '2024-11-11 20:03:48', '2024-11-11 20:03:48'),
-(3, '8', '2024-11-11 20:03:48', '2024-11-11 20:03:48'),
-(4, '7', '2024-11-11 20:03:48', '2024-11-11 20:03:48'),
-(5, '6', '2024-11-11 20:03:48', '2024-11-11 20:03:48'),
-(6, '5', '2024-11-11 20:03:48', '2024-11-11 20:03:48');
+(2, '9', '2024-11-23 08:14:53', '2024-11-23 08:14:53'),
+(4, '10', NULL, NULL),
+(5, '8', NULL, NULL),
+(6, '7', NULL, NULL),
+(7, '6', NULL, NULL),
+(8, '4', NULL, NULL),
+(9, '9', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -205,6 +207,13 @@ CREATE TABLE `sessions` (
   `last_activity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Despejando dados para a tabela `sessions`
+--
+
+INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('2icMqUu9ZpTIiTewGFkB0sYTvenHasBONyOdZO5C', NULL, '127.0.0.1', 'PostmanRuntime/7.42.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiVEMxOXpKNHh6MGwweFJ3Wm5RTUZGUVB5UGx4VmlPbEhDcFh5TUJOaiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1732338730);
+
 -- --------------------------------------------------------
 
 --
@@ -234,17 +243,33 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Despejando dados para a tabela `users`
+-- Estrutura para tabela `usuarios`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Alice', 'alice@example.com', NULL, 'hashed_password_1', NULL, '2024-11-11 20:04:07', '2024-11-11 20:04:07'),
-(2, 'Bob', 'bob@example.com', NULL, 'hashed_password_2', NULL, '2024-11-11 20:04:07', '2024-11-11 20:04:07'),
-(3, 'Charlie', 'charlie@example.com', NULL, 'hashed_password_3', NULL, '2024-11-11 20:04:07', '2024-11-11 20:04:07'),
-(4, 'Diana', 'diana@example.com', NULL, 'hashed_password_4', NULL, '2024-11-11 20:04:07', '2024-11-11 20:04:07'),
-(5, 'Eve', 'eve@example.com', NULL, 'hashed_password_5', NULL, '2024-11-11 20:04:07', '2024-11-11 20:04:07'),
-(6, 'Frank', 'frank@example.com', NULL, 'hashed_password_6', NULL, '2024-11-11 20:04:07', '2024-11-11 20:04:07');
+CREATE TABLE `usuarios` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `name`, `email`, `password`, `avatar`, `created_at`, `updated_at`) VALUES
+(1, 'Carlos Silva', 'carlos.silva@email.com', 'senha123', 'carlos_silva.jpg', '2024-11-23 05:25:14', '2024-11-23 05:25:14'),
+(2, 'Ana Oliveira', 'ana.oliveira@email.com', 'senha123', 'ana_oliveira.jpg', '2024-11-23 05:25:14', '2024-11-23 05:25:14'),
+(3, 'Marcelo Santos', 'marcelo.santos@email.com', 'senha123', 'marcelo_santos.jpg', '2024-11-23 05:25:14', '2024-11-23 05:25:14'),
+(4, 'Juliana Costa', 'juliana.costa@email.com', 'senha123', 'juliana_costa.jpg', '2024-11-23 05:25:14', '2024-11-23 05:25:14'),
+(5, 'Lucas Pereira', 'lucas.pereira@email.com', 'senha123', 'lucas_pereira.jpg', '2024-11-23 05:25:14', '2024-11-23 05:25:14'),
+(6, 'Fernanda Lima', 'fernanda.lima@email.com', 'senha123', 'fernanda_lima.jpg', '2024-11-23 05:25:14', '2024-11-23 05:25:14');
 
 -- --------------------------------------------------------
 
@@ -258,20 +283,21 @@ CREATE TABLE `vtubers` (
   `empresa` varchar(255) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `imagem` varchar(255) NOT NULL,
-  `remember_token` varchar(100) DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Despejando dados para a tabela `vtubers`
 --
 
-INSERT INTO `vtubers` (`id`, `name`, `empresa`, `descricao`, `imagem`, `remember_token`) VALUES
-(1, 'Gawr Gura', 'Hololive', 'Uma popular VTuber de estilo tubarão conhecida pelo seu carisma e humor.', 'gawr_gura.png', NULL),
-(2, 'Kizuna AI', 'Activ8', 'Pioneira do movimento VTuber e famosa por sua personalidade animada e interativa.', 'kizuna_ai.png', NULL),
-(3, 'Usada Pekora', 'Hololive', 'VTuber inspirada em coelhos, conhecida por suas travessuras e estilo excêntrico.', 'usada_pekora.png', NULL),
-(4, 'Inugami Korone', 'Hololive', 'Uma VTuber conhecida por seu amor por games clássicos e interação divertida com os fãs.', 'inugami_korone.png', NULL),
-(5, 'Shirakami Fubuki', 'Hololive', 'VTuber estilo raposa, famosa por sua voz doce e personalidade amigável.', 'shirakami_fubuki.png', NULL),
-(6, 'Houshou Marine', 'Hololive', 'VTuber pirata com uma personalidade energética e estilo de humor audacioso.', 'houshou_marine.png', NULL);
+INSERT INTO `vtubers` (`id`, `name`, `empresa`, `descricao`, `imagem`, `created_at`, `updated_at`) VALUES
+(1, 'Kizuna AI', 'Kizuna AI Inc.', 'Pioneira no mundo dos VTubers, uma IA criada para entreter e engajar com seus fãs.', 'kizuna_ai.jpg', '2024-11-23 05:26:07', '2024-11-23 05:26:07'),
+(2, 'Hololive EN', 'Hololive Production', 'Grupo de VTubers que falam em inglês, com uma variedade de conteúdos e personalidades.', 'hololive_en.jpg', '2024-11-23 05:26:07', '2024-11-23 05:26:07'),
+(3, 'Gawr Gura', 'Hololive Production', 'Uma das VTubers mais populares, com a temática de um tubarão, com bastante carisma e interação.', 'gawr_gura.jpg', '2024-11-23 05:26:07', '2024-11-23 05:26:07'),
+(4, 'Aloy', 'Independent', 'Aloy é uma VTuber independente com foco em streaming de games e interação com o público.', 'aloy.jpg', '2024-11-23 05:26:07', '2024-11-23 05:26:07'),
+(5, 'Iron_Maus', 'Independent', 'Uma VTuber com uma temática futurista e humor irreverente, com foco em streamings de jogos.', 'iron_maus.jpg', '2024-11-23 05:26:07', '2024-11-23 05:26:07'),
+(6, 'Shiroi Neko', 'Neko Corp.', 'Shiroi Neko é uma VTuber fofa com um conteúdo focado em jogos de aventura e música.', 'shiroi_neko.jpg', '2024-11-23 05:26:07', '2024-11-23 05:26:07');
 
 --
 -- Índices para tabelas despejadas
@@ -363,6 +389,13 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
+-- Índices de tabela `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `usuarios_email_unique` (`email`);
+
+--
 -- Índices de tabela `vtubers`
 --
 ALTER TABLE `vtubers`
@@ -394,13 +427,13 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT de tabela `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `notas`
 --
 ALTER TABLE `notas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `personal_access_tokens`
@@ -418,6 +451,12 @@ ALTER TABLE `tiponotas`
 -- AUTO_INCREMENT de tabela `users`
 --
 ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `usuarios`
+--
+ALTER TABLE `usuarios`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
