@@ -7,4 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Vtuber extends Model
 {
     //
+    protected $fillable = [
+        'name',
+        'empresa',
+        'descricao',
+        'imagem'
+    ];
 }

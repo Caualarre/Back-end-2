@@ -17,7 +17,7 @@ return new class extends Migration
         $table->string('empresa');
         $table->string('descricao');
         $table->string('imagem');
-        $table->rememberToken();
+        $table->timestamps();
     });
 }
 
