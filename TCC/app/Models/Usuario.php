@@ -2,15 +2,56 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Usuario extends Model
+class Usuario extends Authenticatable
 {
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'avatar',
-    ];
-}
+    protected $table = 'usuarios';
+    protected $primaryKey = 'id';
+/** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable, HasApiTokens;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    // protected $primary = "idUser";
+    // protected $table = "clients";
+
+
+        protected $fillable = [
+            'name',
+            'email',
+            'password',
+            'avatar',
+        ];
+    
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed', //A senha é criptografada automaticamente
+            //https://laravel.com/docs/11.x/eloquent-mutators#attribute-casting
+        ];
+    }
+}
