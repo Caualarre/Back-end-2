@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Usuario;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,9 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Chama o seeder de usuários
+        // Chamando os seeders
         $this->call([
             UsuarioSeeder::class,
+            EmpresaSeeder::class,
+            VtuberSeeder::class, // Adicionando VtuberSeeder
         ]);
     }
 }

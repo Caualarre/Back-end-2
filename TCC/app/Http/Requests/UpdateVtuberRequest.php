@@ -10,7 +10,7 @@ class UpdateVtuberRequest extends FormRequest {
 
     public function rules(){
         return[
-              'name' =>'nullable | string|max:255',
+              'nome' =>'nullable | string|max:255',
               'empresa' =>'nullable | string|max:255',
               'descricao' =>'nullable| string|max:255',
               'imagem' =>'nullable | string | max:255',

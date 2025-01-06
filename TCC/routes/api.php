@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\EmpresaController;
 use App\Http\Controllers\Api\NotaController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VtuberController;
@@ -32,3 +33,5 @@ Route::apiResource('usuarios', UsuarioController::class)->except(['store'])
 
 
 Route::post('/login', [LoginController::class, 'login']);
+
+Route::apiResource('empresas', EmpresaController::class);

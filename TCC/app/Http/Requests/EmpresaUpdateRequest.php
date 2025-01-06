@@ -4,9 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VtuberStoreRequest extends FormRequest
+class EmpresaUpdateRequest extends FormRequest
 {
-    //classe criada com o comando: php artisan make:request ProdutoStoreRequest
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -20,20 +19,12 @@ class VtuberStoreRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            "nome"=>"required",
-            "empresa"=>"required",
-            "descricao"=>"required",
-            "imagem"=>"required"
+            'nome' => 'sometimes|string|max:255',
+            'descricao' => 'nullable|string',
+            'localizacao' => 'nullable|string',
         ];
-    }
-
-    protected function prepareForValidation(): void
-    {
-       // $this->merge([
-          //  'name'=>$this->has('name')
-        //]);
     }
 }

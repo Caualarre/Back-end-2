@@ -31,7 +31,7 @@ class VtuberController extends Controller
     public function store(Request $request)
 {
      $vtuber = $request->all();
-    // $vtuber['name'] = $request->has('name');
+    // $vtuber['nome'] = $request->has('nome');
 
      if (Vtuber::create($vtuber)) {
          return response()->json('Vtuber Criado!', 201);

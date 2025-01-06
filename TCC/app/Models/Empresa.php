@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Vtuber extends Model
+class Empresa extends Model
 {
     //
     protected $fillable = [
         'nome',
-        'empresa',
         'descricao',
-        'imagem'
+        'localizacao'
     ];
 }
