@@ -29,6 +29,6 @@ class UsuarioSeeder extends Seeder
         ]);
 
         // Criação de usuários adicionais via fábrica
-        Usuario::factory(10)->create();
+        Usuario::factory(6)->create();
     }
 }

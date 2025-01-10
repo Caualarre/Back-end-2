@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
             UsuarioSeeder::class,
             EmpresaSeeder::class,
             VtuberSeeder::class, // Adicionando VtuberSeeder
+            UsuarioVtuberSeeder::class,
         ]);
+        
     }
 }

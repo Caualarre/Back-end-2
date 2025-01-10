@@ -9,18 +9,21 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up()
-{
-    Schema::create('vtubers', function (Blueprint $table) {
-        $table->id();
-        $table->string('nome');
-        $table->string('empresa')->default('Independente'); // Define um valor padrão
-        $table->string('descricao');
-        $table->string('imagem')->default('default.png'); // Adiciona valor padrão para imagem
-        $table->timestamps();
-    });
-}
-
+    public function up()
+    {
+        Schema::create('vtubers', function (Blueprint $table) {
+            $table->id();
+            $table->string('nome');
+            $table->unsignedBigInteger('empresa_id'); // Adicionando a chave estrangeira
+            $table->string('descricao');
+            $table->string('imagem');
+            $table->timestamps();
+    
+            // Adicionando a relação com a tabela 'empresas'
+            $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade');
+        });
+    }
+    
 
     /**
      * Reverse the migrations.

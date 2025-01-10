@@ -9,11 +9,11 @@ class UpdateVtuberRequest extends FormRequest {
     }
 
     public function rules(){
-        return[
-              'nome' =>'nullable | string|max:255',
-              'empresa' =>'nullable | string|max:255',
-              'descricao' =>'nullable| string|max:255',
-              'imagem' =>'nullable | string | max:255',
+        return [
+            'nome' => 'nullable|string|max:255',
+            'empresa_id' => 'nullable|exists:empresas,id', // Verifica se o ID da empresa existe na tabela empresas
+            'descricao' => 'nullable|string|max:255',
+            'imagem' => 'nullable|string|max:255',
         ];
     }
 }

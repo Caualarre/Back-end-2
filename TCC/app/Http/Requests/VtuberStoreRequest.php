@@ -23,10 +23,10 @@ class VtuberStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "nome"=>"required",
-            "empresa"=>"required",
-            "descricao"=>"required",
-            "imagem"=>"required"
+            'nome' => 'required|string|max:255',
+            'empresa_id' => 'required|exists:empresas,id', 
+            'descricao' => 'required|string|max:255',
+            'imagem' => 'required|string|max:255',
         ];
     }
 

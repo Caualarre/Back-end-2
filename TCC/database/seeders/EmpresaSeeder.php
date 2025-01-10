@@ -7,9 +7,6 @@ use Illuminate\Database\Seeder;
 
 class EmpresaSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         Empresa::create([
@@ -31,3 +28,4 @@ class EmpresaSeeder extends Seeder
         ]);
     }
 }
+

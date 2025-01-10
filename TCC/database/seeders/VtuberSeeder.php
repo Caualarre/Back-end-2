@@ -3,31 +3,32 @@
 namespace Database\Seeders;
 
 use App\Models\Vtuber;
+use App\Models\Empresa;
 use Illuminate\Database\Seeder;
 
 class VtuberSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+        $hololive = Empresa::where('nome', 'Hololive')->first();
+        $nijisanji = Empresa::where('nome', 'Nijisanji')->first();
+
         Vtuber::create([
             'nome' => 'Gawr Gura',
+            'empresa_id' => $hololive->id, 
             'descricao' => 'VTuber da Hololive, famosa por seu carisma e talento musical.',
             'imagem' => 'gawr_gura.png',
         ]);
 
         Vtuber::create([
-            'nome' => 'Calliope Mori',
-            'descricao' => 'Uma VTuber reaper apaixonada por música e arte.',
-            'imagem' => 'calliope_mori.png',
+            'nome' => 'Kizuna AI',
+            'empresa_id' => $nijisanji->id, 
+            'descricao' => 'Pioneira dos VTubers, conhecida por sua energia e simpatia.',
+            'imagem' => 'kizuna_ai.png',
         ]);
 
-        Vtuber::create([
-            'nome' => 'Ironmouse',
-            'descricao' => 'VTuber da VShojo conhecida por sua energia e humor.',
-            'imagem' => 'ironmouse.png',
-        ]);
+        Vtuber::factory(6)->create();
     }
 }
+
+
