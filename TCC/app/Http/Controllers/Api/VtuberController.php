@@ -32,20 +32,21 @@ class VtuberController extends Controller
     }
     
     public function filtro(Request $request)
-    {
-        // Obtendo os filtros diretamente da query string
-        $name = $request->query('nome');
-        $empresa = $request->query('empresa');
-        $media = $request->query('media');
-        
-        // Aplicando os filtros diretamente no modelo
-        $vtubers = Vtuber::filterByName($name)
-            ->filterByEmpresa($empresa)
-            ->filterByMedia($media)
-            ->get();
+{
+    // Obtendo os filtros diretamente da query string
+    $name = $request->query('nome');
+    $empresa = $request->query('empresa');
+    $media = $request->query('media');
+    
+    // Aplicando os filtros diretamente no modelo
+    $vtubers = Vtuber::filterByName($name)
+                     ->filterByEmpresa($empresa)
+                     ->filterByMedia($media)
+                     ->get();
 
-        return response()->json($vtubers);
-    }
+    return response()->json($vtubers);
+}
+
     
     /**
      * Store a newly created resource in storage.

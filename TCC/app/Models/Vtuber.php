@@ -40,27 +40,41 @@ class Vtuber extends Model
         return $this->usuarios()->avg('usuario_vtuber.nota');
     }
 
-     // Scopes locais
-     public function scopeFilterByName(Builder $query, $name)
-     {
-         if ($name) {
-             return $query->where('nome', 'like', '%' . $name . '%');
-         }
-     }
- 
-     public function scopeFilterByEmpresa(Builder $query, $empresa)
-     {
-         if ($empresa) {
-             return $query->where('empresa', 'like', '%' . $empresa . '%');
-         }
-     }
- 
-     public function scopeFilterByMedia(Builder $query, $media)
-     {
-         if ($media) {
-             return $query->whereHas('usuarios', function (Builder $q) use ($media) {
-                 $q->havingRaw('AVG(usuario_vtuber.nota) >= ?', [$media]);
-             });
-         }
-     }
+// Modelo Vtuber
+public function scopeFilterByName($query, $name)
+{
+    if ($name) {
+        return $query->where('nome', 'like', "%$name%")
+                     ->withCount(['usuarios as media_nota' => function (Builder $query) {
+                         $query->select(DB::raw('avg(usuario_vtuber.nota)'));
+                     }]);
+    }
+
+    return $query;
+}
+
+public function scopeFilterByEmpresa($query, $empresa)
+{
+    if ($empresa) {
+        return $query->where('empresa', 'like', "%$empresa%")
+                     ->withCount(['usuarios as media_nota' => function (Builder $query) {
+                         $query->select(DB::raw('avg(usuario_vtuber.nota)'));
+                     }]);
+    }
+
+    return $query;
+}
+
+public function scopeFilterByMedia($query, $media)
+{
+    if ($media) {
+        return $query->withCount(['usuarios as media_nota' => function (Builder $query) use ($media) {
+            $query->select(DB::raw('avg(usuario_vtuber.nota)'))
+                  ->havingRaw('avg(usuario_vtuber.nota) >= ?', [$media]);
+        }]);
+    }
+
+    return $query;
+}
+
 }
