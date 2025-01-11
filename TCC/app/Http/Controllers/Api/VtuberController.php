@@ -23,6 +23,7 @@ class VtuberController extends Controller
      */
     public function index()
     {
+        
         // Retorna todos os VTubers com suas médias calculadas sem carregar os usuários
         $vtubers = Vtuber::withCount(['usuarios as media_nota' => function (Builder $query) {
             $query->select(DB::raw('avg(usuario_vtuber.nota)'));
@@ -32,21 +33,36 @@ class VtuberController extends Controller
     }
     
     public function filtro(Request $request)
-{
-    // Obtendo os filtros diretamente da query string
-    $name = $request->query('nome');
-    $empresa = $request->query('empresa');
-    $media = $request->query('media');
+    {
+        
+        // Obtendo os filtros diretamente da query string
+        $name = $request->query('nome');
+        $empresa = $request->query('empresa_id');
+        $media = $request->query('media');
+        
+        // Começa com a consulta base
+        $query = Vtuber::query();
     
-    // Aplicando os filtros diretamente no modelo
-    $vtubers = Vtuber::filterByName($name)
-                     ->filterByEmpresa($empresa)
-                     ->filterByMedia($media)
-                     ->get();
-
-    return response()->json($vtubers);
-}
-
+        // Aplicando os filtros dinamicamente
+        if ($name) {
+            $query->filterByName($name);
+        }
+    
+        if ($empresa) {
+            $query->filterByEmpresa($empresa);
+        }
+    
+        if ($media) {
+            $query->filterByMedia($media);
+        }
+    
+        // Executa a consulta com filtros aplicados
+        $vtubers = $query->get();
+    
+        return response()->json($vtubers);
+    }
+    
+    
     
     /**
      * Store a newly created resource in storage.
@@ -70,6 +86,13 @@ class VtuberController extends Controller
     try {
         // Validação dos dados pela classe VtuberStoreRequest
         $validatedData = $request->validated();
+        if($request->file('imagem')){
+            $fileName = $request->file('imagem')->hashName();
+            if(!$request->file('imagem')->store('vtubers', 'public'))
+            throw new Exception('Erro ao salvar a imagem');
+        $validatedData['imagem'] = $fileName;
+
+        }
 
         // Criando o novo VTuber com os dados validados
         $vtuber = Vtuber::create($validatedData);
@@ -115,7 +138,9 @@ class VtuberController extends Controller
      * Update the specified resource in storage.
      */
 
+    
     public function update(UpdateVtuberRequest $request, Vtuber $vtuber)
+    
     {
         try {
             $validatedData = $request->validated();
@@ -126,6 +151,40 @@ class VtuberController extends Controller
             return response()->json(['error' => $error->getMessage()], 500);
         }
     }
+        /*
+    public function update(UpdateVtuberRequest $request, Vtuber $vtuber)
+    {
+        try {
+            // Validando os dados da requisição
+            $validatedData = $request->validated();
+    
+            // Verificando se foi enviado um arquivo de imagem
+            if ($request->file('imagem')) {
+                // Excluindo a imagem antiga, se ela existir
+                if ($vtuber->imagem && Storage::disk('public')->exists("vtubers/{$vtuber->imagem}")) {
+                    Storage::disk('public')->delete("vtubers/{$vtuber->imagem}");
+                }
+    
+                // Salvando a nova imagem
+                $fileName = $request->file('imagem')->hashName();
+                if (!$request->file('imagem')->store('vtubers', 'public')) {
+                    throw new \Exception('Erro ao salvar a imagem');
+                }
+                $validatedData['imagem'] = $fileName;
+            }
+    
+            // Atualizando os dados do VTuber
+            $vtuber->update($validatedData);
+    
+            return response()->json([
+                'message' => 'VTuber atualizado com sucesso!',
+                'data' => new VtuberResource($vtuber),
+            ], 200);
+        } catch (\Exception $error) {
+            return response()->json(['error' => $error->getMessage()], 500);
+        }
+    }
+    */
 
     // public function update(Request $request, Vtuber $vtuber)
     //{

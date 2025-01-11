@@ -1,0 +1,88 @@
+{
+	"info": {
+		"_postman_id": "b117f705-f813-42c1-9a8b-3e3da35da405",
+		"name": "Filtro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39660208"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8000/api/vtubers-filtro?media=3.500",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/vtubers-filtro?media=3.500",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"vtubers-filtro"
+					],
+					"query": [
+						{
+							"key": "media",
+							"value": "3.500"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/vtubers-filtro?nome=Gura",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/vtubers-filtro?nome=Gura",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"vtubers-filtro"
+					],
+					"query": [
+						{
+							"key": "nome",
+							"value": "Gura"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/vtubers-filtro?empresa_id=1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/vtubers-filtro?empresa_id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"vtubers-filtro"
+					],
+					"query": [
+						{
+							"key": "empresa_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

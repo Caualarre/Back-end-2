@@ -19,8 +19,14 @@ Route::apiResource('users', UserController::class);
 Route::apiResource('vtubers', VtuberController::class)
 ->middleware('auth:sanctum');//todas protegidas (post, put, delete)
 
+
+
+// Definindo o recurso de vtubers
 Route::apiResource('vtubers', VtuberController::class)
 ->only(['index','show']);//sobreescreve a proteção de index e show
+
+Route::get('vtubers-filtro', [VtuberController::class, 'filtro']);
+//Route::get('/vtubers', [VtuberController::class, 'filtro']);
 
 //Route::apiResource('notas', NotaController::class)
 //->middleware('auth:sanctum');//todas protegidas 
@@ -53,4 +59,3 @@ Route::get('/usuarios/{usuarioId}/avaliacoes', [VtuberUsuarioController::class, 
 
 Route::get('/usuarios/{usuarioId}/avaliacoes', [VtuberUsuarioController::class, 'showUsuarioEvaluations']);
 
-Route::get('/vtubers', [VtuberController::class, 'filtro']);

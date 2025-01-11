@@ -26,7 +26,7 @@ class VtuberStoreRequest extends FormRequest
             'nome' => 'required|string|max:255',
             'empresa_id' => 'required|exists:empresas,id', 
             'descricao' => 'required|string|max:255',
-            'imagem' => 'required|string|max:255',
+            'imagem' => 'required|image',
         ];
     }
 
