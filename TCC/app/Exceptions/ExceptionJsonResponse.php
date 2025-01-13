@@ -14,20 +14,20 @@ class ExceptionJsonResponse extends Exception
     public function render(Request $request): JsonResponse
     {
         $previous = $this->getPrevious();
-        $statusHttp = $this->getCode();
+        $statusHttp = $this->getCode() ?: 500; // Se não tiver código, assume 500
         $responseError = [
             'message' => $this->getMessage(),
         ];
 
-        if (env('APP_DEBUG'))
-            $responseError = [
-                ...$responseError,
-                'exception' => $previous->getMessage(),
-                'error' => $previous,
-                'trace' => $previous->getTrace()
-            ];
-        return response()
-                ->json($responseError)
-                ->setStatusCode($statusHttp,$this->getMessage());
+        if (env('APP_DEBUG')) {
+            $responseError = array_merge($responseError, [
+                'exception' => $previous ? $previous->getMessage() : 'N/A',
+                'error' => $previous ? $previous : 'N/A',
+                'trace' => $previous ? $previous->getTrace() : 'N/A',
+            ]);
+        }
+
+        return response()->json($responseError, $statusHttp);
     }
 }
+

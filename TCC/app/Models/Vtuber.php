@@ -35,10 +35,16 @@ class Vtuber extends Model
     }
 
     // Acessor para calcular média de notas dinamicamente (para detalhes)
-    public function getMediaNotaAttribute()
-    {
-        return $this->usuarios()->avg('usuario_vtuber.nota');
-    }
+    // Acessor para calcular média de notas dinamicamente (para detalhes)
+public function getMediaNotaAttribute()
+{
+    // Calcula a média das notas dos usuários associados
+    $mediaNota = $this->usuarios()->avg('usuario_vtuber.nota');
+
+    // Retorna a média formatada com 2 casas decimais
+    return number_format($mediaNota, 2, '.', '');
+}
+
 
      // Scopes locais
      public function scopeFilterByName(Builder $query, $name)

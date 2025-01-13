@@ -199,17 +199,25 @@ class VtuberController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-   public function destroy(Vtuber $vtuber)
-{
-    try {
-        // Exclui o VTuber
-        $vtuber->delete();
-
-        return response()->json(['message' => 'Vtuber deletada com sucesso'], 200);
-    } catch (Exception $error) {
-        return response()->json(['error' => $error->getMessage()], 500);
+    public function destroy(Vtuber $vtuber)
+    {
+        try {
+            // Verifica se o VTuber existe
+            if (!$vtuber) {
+                return response()->json(['message' => 'Vtuber não encontrada'], 404);
+            }
+    
+            // Exclui o VTuber
+            $vtuber->delete();
+    
+            // Retorna sucesso
+            return response()->json(['message' => 'Vtuber deletada com sucesso'], 200);
+        } catch (Exception $error) {
+            // Retorna erro de exceção
+            return response()->json(['error' => 'Erro ao excluir o VTuber: ' . $error->getMessage()], 500);
+        }
     }
-}
+    
 
         //try {
         //  $vtuber->delete();
