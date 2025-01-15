@@ -59,3 +59,6 @@ Route::get('/usuarios/{usuarioId}/avaliacoes', [VtuberUsuarioController::class, 
 
 Route::get('/usuarios/{usuarioId}/avaliacoes', [VtuberUsuarioController::class, 'showUsuarioEvaluations']);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [LoginController::class, 'logout']);
+});

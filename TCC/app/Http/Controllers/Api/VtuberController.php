@@ -12,7 +12,7 @@ use App\Http\Resources\VtuberResource;
 use App\Models\Vtuber;
 use Illuminate\Http\Request;
 use App\Http\Resources\VtuberCollection;
-
+use Illuminate\Support\Facades\Storage;
 use Exception;
 use Illuminate\Validation\ValidationException;
 
@@ -22,45 +22,55 @@ class VtuberController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        
-        // Retorna todos os VTubers com suas médias calculadas sem carregar os usuários
-        $vtubers = Vtuber::withCount(['usuarios as media_nota' => function (Builder $query) {
-            $query->select(DB::raw('avg(usuario_vtuber.nota)'));
-        }])->get();
+{
+    // Retorna todos os VTubers com suas médias calculadas sem carregar os usuários
+    $vtubers = Vtuber::withCount(['usuarios as media_nota' => function (Builder $query) {
+        $query->select(DB::raw('avg(usuario_vtuber.nota)'));
+    }])->get();
+
+    // Adiciona o caminho completo para cada imagem
+    $vtubers->transform(function ($vtuber) {
+        $vtuber->imagem = url("storage/vtubers/{$vtuber->imagem}");
+        return $vtuber;
+    });
+
+    return response()->json($vtubers);
+}
     
-        return response()->json($vtubers);
+public function filtro(Request $request)
+{
+    // Obtém os filtros da query string
+    $name = $request->query('nome');
+    $empresa = $request->query('empresa_id');
+    $media = $request->query('media');
+    
+    // Inicia a consulta base
+    $query = Vtuber::query()->withCount(['usuarios as media_nota' => function (Builder $query) {
+        $query->select(DB::raw('avg(usuario_vtuber.nota)'));
+    }]);
+
+    // Aplica os filtros dinamicamente
+    if ($name) {
+        $query->filterByName($name);
     }
-    
-    public function filtro(Request $request)
-    {
-        
-        // Obtendo os filtros diretamente da query string
-        $name = $request->query('nome');
-        $empresa = $request->query('empresa_id');
-        $media = $request->query('media');
-        
-        // Começa com a consulta base
-        $query = Vtuber::query();
-    
-        // Aplicando os filtros dinamicamente
-        if ($name) {
-            $query->filterByName($name);
-        }
-    
-        if ($empresa) {
-            $query->filterByEmpresa($empresa);
-        }
-    
-        if ($media) {
-            $query->filterByMedia($media);
-        }
-    
-        // Executa a consulta com filtros aplicados
-        $vtubers = $query->get();
-    
-        return response()->json($vtubers);
+
+    if ($empresa) {
+        $query->filterByEmpresa($empresa);
     }
+
+    if ($media) {
+        $query->filterByMedia($media);
+    }
+
+    // Executa a consulta e ajusta as URLs das imagens
+    $vtubers = $query->get()->transform(function ($vtuber) {
+        $vtuber->imagem = url("storage/vtubers/{$vtuber->imagem}");
+        return $vtuber;
+    });
+
+    return response()->json($vtubers);
+}
+
     
     
     
@@ -127,6 +137,9 @@ class VtuberController extends Controller
         $vtuber->loadCount(['usuarios as media_nota' => function (Builder $query) {
             $query->select(DB::raw('avg(usuario_vtuber.nota)'));
         }]);
+    
+        // Garantir que a URL da imagem seja completa
+        $vtuber->imagem = url("storage/vtubers/{$vtuber->imagem}");
     
         return response()->json($vtuber);
     }

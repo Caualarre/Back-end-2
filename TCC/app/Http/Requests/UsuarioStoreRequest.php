@@ -14,7 +14,7 @@ class UsuarioStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|min:2|max:255',
             'email' => 'required|string',
             'password' => 'required|string|min:6',
             'avatar' => 'nullable|string',

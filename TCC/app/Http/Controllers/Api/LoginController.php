@@ -24,11 +24,21 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        try{
-            $request->usuario()->tokens()->delete();
-            return response()->json(['message' => 'Logout realizado com sucesso']);
-        }catch(Exception $error){
-            $this->errorHandler('Erro ao realizar logout', $error, 401);
+        try {
+            $user = $request->user(); // Obtém o usuário autenticado pelo token
+            if ($user) {
+                $user->tokens()->delete(); // Remove os tokens do usuário
+                return response()->json(['message' => 'Logout realizado com sucesso']);
+            }
+    
+            return response()->json(['message' => 'Usuário não autenticado'], 401);
+        } catch (Exception $error) {
+            return response()->json([
+                'message' => 'Erro ao realizar logout',
+                'error' => $error->getMessage(),
+                'trace' => $error->getTrace(),
+            ], 500);
         }
     }
+    
 }
