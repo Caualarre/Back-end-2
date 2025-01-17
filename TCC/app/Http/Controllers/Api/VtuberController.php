@@ -151,7 +151,7 @@ public function filtro(Request $request)
      * Update the specified resource in storage.
      */
 
-    
+    // arrumar o update
     public function update(UpdateVtuberRequest $request, Vtuber $vtuber)
     
     {
