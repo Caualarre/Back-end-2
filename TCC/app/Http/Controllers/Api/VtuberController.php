@@ -23,9 +23,9 @@ class VtuberController extends Controller
      */
     public function index()
 {
-    // Retorna todos os VTubers com suas médias calculadas sem carregar os usuários
+    // Retorna todos os VTubers com suas médias calculadas
     $vtubers = Vtuber::withCount(['usuarios as media_nota' => function (Builder $query) {
-        $query->select(DB::raw('avg(usuario_vtuber.nota)'));
+        $query->select(DB::raw('avg(usuario_vtuber.nota)'))->whereNotNull('usuario_vtuber.nota');
     }])->get();
 
     // Adiciona o caminho completo para cada imagem
@@ -152,17 +152,40 @@ public function filtro(Request $request)
      */
 
     // arrumar o update
-    public function update(UpdateVtuberRequest $request, Vtuber $vtuber)
-    
+    public function update(Request $request, $id)
     {
-        try {
-            $validatedData = $request->validated();
-            // dd($validatedData);
-            $vtuber->update($validatedData);
-            return response()->json(['message' => 'Vtuber atualizada com sucesso', 'data' => $vtuber], 200);
-        } catch (\Exception $error) {
-            return response()->json(['error' => $error->getMessage()], 500);
-        }
+    // Validação dos dados
+    $validated = $request->validate([
+    'nome' => 'required|string|max:255',
+    'descricao' => 'required|string|max:500',
+    'imagem' => 'nullable|image|mimes:jpeg,png,jpg,webp,jfif,gif|max:2048', // Validação de imagem
+    ]);
+    
+    $vtuber = Vtuber::findOrFail($id);
+    $vtuber->nome = $validated['nome'];
+    $vtuber->descricao = $validated['descricao'];
+    
+    // Verifica se há uma nova imagem
+    if ($request->hasFile('imagem')) {
+    // Exclui a imagem antiga, se ela existir
+    if ($vtuber->imagem && Storage::disk('public')->exists("vtubers/{$vtuber->imagem}")) {
+    Storage::disk('public')->delete("vtubers/{$vtuber->imagem}");
+    }
+    
+    // Salva a nova imagem na pasta 'public/vtubers'
+    $imagePath = $request->file('imagem')->store('vtubers', 'public');
+    
+    // Armazena o nome da imagem no banco de dados
+    $vtuber->imagem = basename($imagePath); // Armazena o nome do arquivo, não o caminho completo
+    }
+    
+    // Salva as alterações no banco
+    $vtuber->save();
+    
+    return response()->json([
+    'message' => 'Vtuber atualizado com sucesso',
+    'data' => $vtuber
+    ]);
     }
         /*
     public function update(UpdateVtuberRequest $request, Vtuber $vtuber)
