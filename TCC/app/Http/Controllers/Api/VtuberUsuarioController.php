@@ -13,7 +13,7 @@ class VtuberUsuarioController extends Controller
     public function store(Request $request, $usuarioId, $vtuberId)
     {
         $request->validate([
-            'nota' => 'required|integer|min:1|max:5',
+            'nota' => 'required|integer|min:1|max:10',
             'comentario' => 'nullable|string|max:255',
         ]);
 
