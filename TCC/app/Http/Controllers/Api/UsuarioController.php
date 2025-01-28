@@ -31,7 +31,7 @@ class UsuarioController extends Controller
 
     public function show(Usuario $usuario)
     {
-        return new UsuarioResource($usuario);
+        return response()->json($usuario, 200);
     }
 
     public function update(UpdateUsuarioRequest $request, Usuario $usuario)
